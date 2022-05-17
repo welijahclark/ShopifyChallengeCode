@@ -1,0 +1,31 @@
+#Uploading and viewing the dataset into R
+> library(readr)
+Warning message:
+package ‘readr’ was built under R version 3.6.3 
+> X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1 <- read_csv("All Documents/Career Stuff/Shopify Challenge/2019 Winter Data Science Intern Challenge Data Set - Sheet1.csv")
+> View(X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1)
+
+#Declaring variables and obtaining the mean
+> orderamount <- X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1$order_amount
+> mean(orderamount)
+[1] 3145.128
+#The mean mentioned in 1.1 is the mean order amount -regardless- of the number of items bundled in the order. Let's come up with a different way to sample this.
+
+#Declaring more variables and re-arranging a different mean
+> totalitems <- X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1$total_items
+> individualorderaverage <- orderamount/totalitems
+> mean(individualorderaverage)
+[1] 387.7428
+
+#This is better, but still seems somewhat unrealistic for sneakers. so let's remove some outliers based on what I can see in the dataset.
+
+#Outlier Replace Funtionality
+
+> outlierReplace = function(dataframe, cols, rows, newValue = NA) {
++     if (any(rows)) {
++         set(dataframe, rows, cols, newValue)
++     }
++ }
+> outlierReplace(X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1, "order_amount", which(X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1$order_amount > 1000), NA)
+> mean(na.omit(orderamount))
+[1] 301.0643
