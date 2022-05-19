@@ -1,11 +1,9 @@
-########
-#Part A#
-########
+##########
+# Part A #
+##########
 
 #Uploading and viewing the dataset into R
 > library(readr)
-Warning message:
-package ‘readr’ was built under R version 3.6.3 
 > X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1 <- read_csv("All Documents/Career Stuff/Shopify Challenge/2019 Winter Data Science Intern Challenge Data Set - Sheet1.csv")
 > View(X2019_Winter_Data_Science_Intern_Challenge_Data_Set_Sheet1)
 
@@ -14,12 +12,12 @@ package ‘readr’ was built under R version 3.6.3
 > mean(orderamount)
 [1] 3145.128
 
-#This is how the original AOV of $3145.13 would have been obtained. We could either do some mathematical manipulation of the data or some data cleaning to
-come up with a better metric for AOV.
+#This is how the original Average Order Value (AOV) of $3145.13 would have been obtained. While it isn't necessarily wrong, it is very simple. 
+#We could either do some basic manipulation of the data or do some data cleaning to come up with a better metric for AOV.
 
-########
-#Part B#
-########
+##########
+# Part B #
+##########
 
 #Method 1: Arithmetic Approach
 
@@ -29,7 +27,13 @@ come up with a better metric for AOV.
 > mean(individualorderaverage)
 [1] 387.7428
 
-#387.7428 is better, but still seems somewhat unrealistic for sneakers. so let's remove some outliers based on what I can see in the dataset.
+#387.7428 is better, but still seems somewhat unrealistic for sneakers. We can also check to see if the data is right skewed with the median.
+
+> median(individualorderaverage)
+[1] 153
+
+# With a median of $153, the data is very likely skewed to the right. However, this seems low and may undercount orders with multiple pairs of sneakers.
+# From here, let's try the data cleaning method.
 
 #Method 2: Outlier Replace Funtionality + Recalculating
 
@@ -43,11 +47,15 @@ outlierReplace = function(dataframe, cols, rows, newValue = NA) {
 > mean(na.omit(orderamount))
 [1] 301.0643
 
-# $301.0643 is even better, but it is possible that the data is skewed due to the presence of some very specific models of sneakers (perhaps some limited 
-edition Air Jordans). We can check the median as well to see if this is the case.
+#$301.0643 is even better, but it is still possible that the data is skewed due to the presence of some more expensive models of sneakers. 
+#We can check the median as well to see if this is the case.
 
 > median(na.omit(orderamount))
 [1] 284
 
-# With $284 as our median and as a more realistic AOV, we can note that the distribution of our orders is right skewed based on the previous mean of $301.0643.
-# Thus, it would be more realistic to say that $284 serves as a better metric for AOV.
+##########
+# Part C #
+##########
+
+#With $284 as our median and as a more realistic AOV, we can note that the distribution of our orders is right skewed based on the previous mean of $301.06.
+#Thus, it would be more realistic to say that $284 serves as a better metric for AOV.
